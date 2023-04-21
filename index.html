@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- meta -->
-    <title>Buffer Control Panel</title>
+    <title>dataLayer</title>
     <script src="./vue.js"></script>
     <style>
     </style>
@@ -25,7 +25,9 @@
                 <hr>
                 <button @click="getbill()">結帳</button>
                 <div>結帳資料：(JSON)</div>
-                {{bill}}
+                <pre>
+                    {{bill}}
+                </pre>
             </div>
             <div style="width:33%;border: 1px solid black;">
                 <h2>這時候的DataLayer</h2>
@@ -45,7 +47,9 @@
                     </ul>
                 </div>
                 <div>GTM抓到的資料</div>
-                {{gtm}}
+                <pre>
+                    {{gtm}}
+                </pre>
             </div>
         </div>
         <div>
