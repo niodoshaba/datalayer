@@ -9,11 +9,16 @@
     <title>dataLayer</title>
     <script src="./vue.js"></script>
     <style>
+
+pre {
+    background-color: rgb(253, 253, 227);
+    box-shadow: 2px 2px 4px rgb(160, 160, 144);
+    width: 80%;
+    margin-left: 10%;
+}
+
     </style>
 </head>
-<style>
-
-</style>
 
 <body class="body">
     <div id="vue" v-cloak>
@@ -21,7 +26,9 @@
             <div style="width:33%;border: 1px solid black;">
                 <h2>你的網站</h2>
                 讀取網站資料：(JSON)
-                {{loadpage}}
+                <pre>
+                    {{loadpage}}
+                </pre>
                 <hr>
                 <button @click="getbill()">結帳</button>
                 <div>結帳資料：(JSON)</div>
