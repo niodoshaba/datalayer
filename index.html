@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html translate="no">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- meta -->
+    <title>Buffer Control Panel</title>
+    <script src="./vue.js"></script>
+    <style>
+    </style>
+</head>
+<style>
+
+</style>
+
+<body class="body">
+    <div id="vue" v-cloak>
+        <div style="display:flex">
+            <div style="width:33%;border: 1px solid black;">
+                <h2>你的網站</h2>
+                讀取網站資料：(JSON)
+                {{loadpage}}
+                <hr>
+                <button @click="getbill()">結帳</button>
+                <div>結帳資料：(JSON)</div>
+                {{bill}}
+            </div>
+            <div style="width:33%;border: 1px solid black;">
+                <h2>這時候的DataLayer</h2>
+                <br>
+                <pre>
+                    {{dataLayer}}
+
+                </pre>
+
+            </div>
+            <div style="width:33%;border: 1px solid black;">
+                <h2>GTM</h2>
+                <div>GTM有設定的事件：
+                    <ul>
+                        <li>loadpage</li>
+                        <li>bill</li>
+                    </ul>
+                </div>
+                <div>GTM抓到的資料</div>
+                {{gtm}}
+            </div>
+        </div>
+        <div>
+        </div>
+    </div>
+
+    <script>
+        let data = {
+            dataLayer: [],
+            bill: {
+                'event': 'bill',
+                'product_id': '',
+                'user_id': '',
+            },
+            loadpage:{
+                'event': 'loadpage',
+                'user_id': '',
+            },
+            user: '',
+            gtm: {},
+        }
+
+        //data//
+
+        const vue = new Vue({
+            el: '#vue', data: data,
+            created: function () {
+            },
+            mounted: function () {
+                let self = this
+                setTimeout(function () {
+                    self.init()
+                }, 1000)
+            },
+            watch: {
+            },
+            methods: {
+                init: function () {
+                    let self = this
+                    let random = '';
+
+                    while (random.length < 5) {
+                        random += Math.floor(Math.random() * 10000);
+                    }
+
+                    self.user = 'user-' + random
+                    let loadpage = {
+                        'event': 'loadpage',
+                        'user_id': self.user,
+                    }
+                    self.loadpage = loadpage
+
+                    setTimeout(function(){
+                        self.dataLayer.push(loadpage)
+                        alert('觸發了GTM的loadpage')
+                        self.gtmGetData('loadpage')
+                    },1000)
+                },
+                getbill: function () {
+                    let self = this
+                    let random2 = '';
+                    while (random2.length < 5) {
+                        random2 += Math.floor(Math.random() * 10000);
+                    }
+                    let billData = {
+                        'event': 'bill',
+                        'product_id': 'pro-' + random2,
+                        'user_id': self.user,
+                    }
+                    self.bill = JSON.stringify(billData)
+                    setTimeout(function(){
+                        self.dataLayer.push(JSON.parse(self.bill))
+                        alert('觸發了GTM的bill')
+                        self.gtmGetData('bill')
+                    },1000)
+
+                },
+
+                gtmGetData: function (type) {
+                    let self = this
+                    setTimeout(function () {
+                        switch (type) {
+                            case 'loadpage':
+                                event = self.dataLayer.filter(item => item.event === 'loadpage').pop();;
+                                break;
+
+                            case 'bill':
+                                event = self.dataLayer.filter(item => item.event === 'bill').pop();;
+                                break;
+                        }
+                        self.gtm = event
+
+                    }, 1000)
+                }
+            }
+        });
+
+        // document.onkeydown = (e) => {
+        //     var charCode = parseInt(e.charCode || e.keyCode || e.which);
+        //     var ctrl = e.ctrlKey
+        //     console.log(charCode)
+        //     if (charCode >= 49 && charCode <= 53) {
+        //         // if (charCode >= 49 && charCode <= 53 && ctrl) {
+        //         return false;
+        //     }
+        //     if (charCode == 116) {
+        //         window.location.reload()
+        //         return false;
+        //     }
+        // }
+
+    </script>
+
+</body>
+
+</html>
